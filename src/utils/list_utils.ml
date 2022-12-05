@@ -48,6 +48,15 @@ module List = struct
     | [ a ] -> a
     | x :: xs -> fn x (reduce fn xs)
 
+  let split_on_p l fn =
+    let rec aux acc cur l =
+      match l with
+      | [] -> List.rev (cur :: acc)
+      | x :: xs ->
+          if fn x then aux (cur :: acc) [] xs else aux acc (x :: cur) xs
+    in
+    aux [] [] l
+
   let reduce2 fn l =
     let rec reduce' acc fn l =
       match l with x :: xs -> reduce' (fn x acc) fn xs | [] -> acc
